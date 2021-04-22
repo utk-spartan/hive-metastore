@@ -1,0 +1,82 @@
+---
+# brings up the dependencies
+version: '3'
+services:
+
+  # hive-metastore:
+  #   container_name: hive-metastore
+  #   build:
+  #     context: .
+  #     dockerfile: hive3/Dockerfile
+  #   environment:
+  #     HIVE_METASTORE_DRIVER: com.mysql.jdbc.Driver
+  #     S3_ENDPOINT: http://minio:9000
+  #     S3_ACCESS_KEY: minio
+  #     S3_SECRET_KEY: minio123
+  #     REGION: ap-south-1
+  #     HIVE_METASTORE_JDBC_URL: jdbc:mysql://hive-metastore-mysql:3306/metastore
+  #     HIVE_METASTORE_USER: hiveuser
+  #     HIVE_METASTORE_PASSWORD: hive123 
+  #   expose:
+  #     - 9083
+  #   entrypoint: ["tail", "-f", "/dev/null"]
+  #   networks:
+  #     - trino
+
+  
+  hive-metastore21:
+    container_name: hive-metastore21
+    # image: tanmay76/hive-metastore:v1
+    build:
+      context: .
+      dockerfile: hive2.1/Dockerfile
+    environment:
+      HIVE_METASTORE_DRIVER: com.mysql.jdbc.Driver
+      S3_ENDPOINT: http://minio:9000
+      S3_ACCESS_KEY: minio
+      S3_SECRET_KEY: minio123
+      AWS_REGION: ap-south-1
+      REGION: ap-south-1
+      HIVE_METASTORE_JDBC_URL: jdbc:mysql://hive-metastore-mysql:3306/metastore
+      HIVE_METASTORE_USER: hiveuser
+      HIVE_METASTORE_PASSWORD: hive123 
+    entrypoint: ["tail", "-f", "/dev/null"]
+    volumes: 
+      - ./files/core-site.xml:/etc/hive/conf/core-site.xml
+      - ./files/metastore-site.xml:/etc/hive/conf/hive-site.xml
+    expose:
+      - 9083
+    networks:
+      - trino
+
+  # hive-metastore-mysql:
+  #   container_name: hive-metastore-mysql
+  #   image: mysql:8.0.18
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: 'root123'
+  #     MYSQL_DATABASE: 'metastore3'
+  #     MYSQL_USER: 'hiveuser'
+  #     MYSQL_PASSWORD: 'hive123'
+  #   expose:
+  #     - 3306
+  #   networks:
+  #     - presto
+
+      # ALTER USER 'hiveuser'@'%' IDENTIFIED WITH mysql_native_password BY 'hive123'
+
+  hive-metastore-mysql:
+    container_name: hive-metastore-mysql
+    image: mysql:5
+    environment:
+      MYSQL_ROOT_PASSWORD: 'root123'
+      MYSQL_DATABASE: 'metastore'
+      MYSQL_USER: 'hiveuser'
+      MYSQL_PASSWORD: 'hive123'
+    expose:
+      - 3306
+    networks:
+      - trino
+
+networks:
+  trino:
+    external: true
