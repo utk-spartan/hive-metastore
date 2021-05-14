@@ -1,27 +1,27 @@
 <?xml version="1.0"?>
 <configuration>
-    <!-- <property>
+    <property>
         <name>hive.metastore.warehouse.dir</name>
         <value>s3://warehouse/default</value>
     </property>
     <property>
         <name>fs.s3a.endpoint</name>
-        <value>http://minio:9000</value>
+        <value>%S3_ENDPOINT%</value>
     </property>
 
     <property>
         <name>fs.s3a.access.key</name>
-        <value>minio</value>
+        <value>%AWS_ACCESS_KEY_ID%</value>
     </property>
 
     <property>
         <name>fs.s3a.secret.key</name>
-        <value>minio123</value>
+        <value>%AWS_SECRET_KEY%</value>
     </property>
     <property>
         <name>fs.s3a.connection.ssl.enabled</name>
         <value>false</value>
-    </property> -->
+    </property>
     <property>
         <name>fs.s3a.path.style.access</name>
         <value>true</value>
@@ -34,10 +34,26 @@
         <name>fs.s3n.impl</name>
         <value>org.apache.hadoop.fs.s3a.S3AFileSystem</value>
     </property>
+
+
     <property>
         <name>javax.jdo.option.ConnectionDriverName</name>
-        <value>com.mysql.jdbc.Driver</value>
+        <value>%HIVE_METASTORE_DRIVER%</value>
     </property>
+    <property>
+        <name>javax.jdo.option.ConnectionURL</name>
+        <value>%HIVE_METASTORE_JDBC_URL%</value>
+    </property>
+    <property>
+        <name>javax.jdo.option.ConnectionUserName</name>
+        <value>%HIVE_METASTORE_USER%</value>
+    </property>
+    <property>
+        <name>javax.jdo.option.ConnectionPassword</name>
+        <value>%HIVE_METASTORE_PASSWORD%</value>
+    </property>
+
+
     <property>
         <name>datanucleus.autoCreateSchema</name>
         <value>false</value>
@@ -66,6 +82,16 @@
         <name>hive.metastore.schema.verification</name>
         <value>true</value>
     </property>
+
+    <property>
+        <name>hive.root.logger</name>
+        <value>INFO,console</value>
+    </property>
+    <property>
+        <name>hive.log.threshold</name>
+        <value>INFO</value>
+    </property>
+
     <property>
         <name>hive.security.authorization.createtable.owner.grants</name>
         <value>ALL</value>

@@ -36,7 +36,7 @@ RUN mkdir -p /usr/share/java \
 
 COPY files/metastore-site.xml /opt/hive-metastore/conf/
 COPY files/core-site.xml /opt/hadoop/etc/hadoop/
-COPY entrypoint.sh /entrypoint.sh
+COPY hive3/entrypoint.sh /entrypoint.sh
 
 
 EXPOSE 8080

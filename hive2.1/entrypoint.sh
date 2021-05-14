@@ -8,9 +8,14 @@ export HIVE_METASTORE_DB_HOST="$(echo "$HIVE_METASTORE_JDBC_URL" | cut -d / -f 3
 export HIVE_METASTORE_DB_NAME="$(echo "$HIVE_METASTORE_JDBC_URL" | cut -d / -f 4)"
 sed -i \
   -e "s|%S3_ENDPOINT%|${S3_ENDPOINT:-}|g" \
-  -e "s|%S3_ACCESS_KEY%|${S3_ACCESS_KEY:-}|g" \
-  -e "s|%S3_SECRET_KEY%|${S3_SECRET_KEY:-}|g" \
+  -e "s|%AWS_ACCESS_KEY_ID%|${AWS_ACCESS_KEY_ID:-}|g" \
+  -e "s|%AWS_SECRET_KEY%|${AWS_SECRET_KEY:-}|g" \
+  -e "s|%HIVE_METASTORE_DRIVER%|${HIVE_METASTORE_DRIVER:-}|g" \
+  -e "s|%HIVE_METASTORE_JDBC_URL%|${HIVE_METASTORE_JDBC_URL:-}|g" \
+  -e "s|%HIVE_METASTORE_USER%|${HIVE_METASTORE_USER:-}|g" \
+  -e "s|%HIVE_METASTORE_PASSWORD%|${HIVE_METASTORE_PASSWORD:-}|g" \
   /opt/hive/conf/hive-site.xml
+
 
 if [[ "$HIVE_METASTORE_DRIVER" == com.mysql.jdbc.Driver ]]; then
     sqlDir=/opt/hive/scripts/metastore/upgrade/mysql/
@@ -58,4 +63,4 @@ else
     exit 1
 fi
 # log threshold is set to INFO to avoid log pollution from Datanucleus
-${HIVE_HOME}/bin/hive --service metastore --hiveconf hive.root.logger=INFO,console --hiveconf hive.log.threshold=INFO --hiveconf javax.jdo.option.ConnectionURL=$HIVE_METASTORE_JDBC_URL --hiveconf javax.jdo.option.ConnectionUserName=$HIVE_METASTORE_USER --hiveconf javax.jdo.option.ConnectionPassword=$HIVE_METASTORE_PASSWORD
+${HIVE_HOME}/bin/hive --service metastore
